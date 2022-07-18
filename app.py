@@ -4,11 +4,13 @@ import json
 import pandas as pd
 import numpy as np
 
+from lib.demo_clean import demo_subset
+from lib.cost_clean import cost_subset
+
 pd.options.mode.chained_assignment = None  # default='warn'
 app = Flask(__name__)
 
-#url = "cost.csv"
-url = "modifiedCost.csv" #Values replaced with less than or equal to 5 with np.nan
+url = "./data/modifiedCost.csv" #Values replaced with less than or equal to 5 with np.nan
 sda = []
 
 df = pd.read_csv(url,error_bad_lines=False)
@@ -324,14 +326,7 @@ texas_outpat_visits_final = texas_outpat_visits_final.rename(columns ={'Blind/Di
 
 texas_outpat_visits_final = texas_outpat_visits_final.replace(to_replace = "0.000", value ="---")              
 texas_outpat_visits_final = texas_outpat_visits_final.replace(to_replace = "-0.000", value ="---")              
-'''
 
-@app.route('/cea_design', methods=["GET","POST"])
-def index():
-    if request.method == 'POST':
-        return render_template('data_entry.html')       
-    return render_template('index.html')
-    '''
 @app.route('/', methods=["GET","POST"])
 @app.route('/home',methods=["GET","POST"])
 def home():
@@ -357,9 +352,26 @@ def download_ceatool():
     path = "doc/CEA-Tool-TAMU.pdf"
     return send_file(path,as_attachment=True)
 
-
-
-
+''' start marg additions 
+'''
+@app.route('/download_tmon_demo')
+def download_tmon_demo():
+    path = './data/tmon_cntrl_demo.csv'
+    return send_file(path,as_attachment=True)
+@app.route('/download_tmon_costs')
+def download_tmon_costs():
+    path = './data/tmon_cntrl_costs.csv'
+    return send_file(path,as_attachment=True)
+@app.route('/download_tmon_hptn_demo')
+def download_tmon_hptn_demo():
+    path = './data/tmon_cntrl_demo_hptn.csv'
+    return send_file(path,as_attachment=True)
+@app.route('/download_tmon_hptn_costs')
+def download_tmon_hptn_costs():
+    path = './data/tmon_cntrl_costs_hptn.csv'
+    return send_file(path,as_attachment=True)
+''' end marg additions
+'''
 @app.route('/medcost', methods=["GET", "POST"])
 def medcost():
     if request.method == "POST":
@@ -724,7 +736,7 @@ def outpatcost():
 
 
 
-url1 = "modifiedDemo.csv"
+url1 = "./data/modifiedDemo.csv"
 sda_demo = []
 
 df_demo = pd.read_csv(url1,error_bad_lines=False)
@@ -886,7 +898,7 @@ def demographics():
                             texas_2018=[texas_2018.to_html(index=False,classes='demo')])
 
 
-url2 = "sda_smmry.csv"
+url2 = "./data/sda_smmry.csv"
 sda_hosp = []
 df_hosp = pd.read_csv(url2,error_bad_lines=False)
 df_hosp = df_hosp.rename(columns={'ccsr':'Condition','year':'Year','n_hospitalizations': 'Hospitalization Count','avg_los':'Avg Length of Stay',
@@ -946,195 +958,381 @@ def heart_conditions():
 
 
     return render_template('heart_condition1.html',sda_hosp=sda_hosp, texas_heart=[texas_heart.to_html(index=False)])
+
+''' start marg additions
 '''
-inter_costs = []
-inter_costs1 = []
+@app.route('/demo-6-month-follow-up', methods=("POST", "GET"))
+def demo_6mo():
+    fn = './data/tmon_cntrl_demo.csv'
+    menu_items = ['Texas', 'MRSA West', 'MRSA Northeast', 'MRSA Central', 'Dallas SDA', 'Nueces SDA', 
+                'Lubbock SDA', 'Jefferson SDA', 'Tarrant SDA', 'Hidalgo SDA']
+    if request.method == 'POST':
+        sda = request.form.get('menu_items')
+        menu_items = [sda] + [item for item in menu_items if item != sda]
+    else:
+        sda = 'Texas'
+    df_treat = demo_subset(fn, sda, 1)
+    df_comp = demo_subset(fn, sda, 0)
+    return render_template('demo.html', 
+        title_header=sda,
+        table_treat=[df_treat.to_html(classes='data', index=False)],
+        table_comp=[df_comp.to_html(classes='data', index=False)],
+        menu_items=menu_items)
 
-@app.route('/data_entry',methods=["GET","POST"])
-def data_entry():
-    if request.method== 'POST':
-        inter_costs = request.form.getlist('inter_costs')
-        noninter_costs = request.form.getlist('noninter_costs')
-        health_outcomes = request.form.getlist('health_outcomes')
-        year = request.form.getlist('year')
+@app.route('/cost-telemonitoring-6-month-follow-up', methods=("POST", "GET"))
+def cost_tm_6mo():
+    fn = './data/tmon_cntrl_costs.csv'
+    menu_items = ['Texas', 'MRSA West', 'MRSA Northeast', 'MRSA Central', 'Dallas SDA', 'Nueces SDA', 
+    'Lubbock SDA', 'Jefferson SDA', 'Tarrant SDA', 'Hidalgo SDA']
+    if request.method == 'POST':
+        sda = request.form.get('menu_items')
+        menu_items = [sda] + [item for item in menu_items if item != sda]
+    else:
+        sda = 'Texas'
+    df_treat_tm = cost_subset(fn, sda, 1, 1)
+    return render_template('cost_tm.html', 
+        title_header=sda,
+        tbl_tmon=[df_treat_tm.to_html(classes='data', index=False)],
+        menu_items=menu_items)
 
-        if inter_costs:
-            inter_costs1 = [float(i) for i in inter_costs]
-        else:
-            inter_costs1 = []
-            total_intercost = 0
+@app.route('/cost-mace-serious-6-month-follow-up', methods=("POST", "GET"))
+def cost_mser_6mo():
+    fn = './data/tmon_cntrl_costs.csv'
+    menu_items = ['Texas', 'MRSA West', 'MRSA Northeast', 'MRSA Central', 'Dallas SDA', 'Nueces SDA', 
+    'Lubbock SDA', 'Jefferson SDA', 'Tarrant SDA', 'Hidalgo SDA']
+    if request.method == 'POST':
+        sda = request.form.get('menu_items')
+        menu_items = [sda] + [item for item in menu_items if item != sda]
+    else:
+        sda = 'Texas'
+    df_treat_mser = cost_subset(fn, sda, 1, 3)
+    df_comp_mser = cost_subset(fn, sda, 0, 3)
+    return render_template('cost_mser.html', 
+        title_header=sda,
+        tbl_trt_ser=[df_treat_mser.to_html(classes='data', index=False)],
+        tbl_cmp_ser=[df_comp_mser.to_html(classes='data', index=False)],
+        menu_items=menu_items)
 
-        if not inter_costs1: 
-            total_intercost = 0
-        else:            
-            total_intercost = sum(inter_costs1)
-        
-        if noninter_costs:
-            noninter_costs1 = [float(i) for i in noninter_costs]
-        else:
-            noninter_costs1 = []
-            total_nonintercost = 0
+@app.route('/cost-mace-non-serious-6-month-follow-up', methods=("POST", "GET"))
+def cost_mot_6mo():
+    fn = './data/tmon_cntrl_costs.csv'
+    menu_items = ['Texas', 'MRSA West', 'MRSA Northeast', 'MRSA Central', 'Dallas SDA', 'Nueces SDA', 
+    'Lubbock SDA', 'Jefferson SDA', 'Tarrant SDA', 'Hidalgo SDA']
+    if request.method == 'POST':
+        sda = request.form.get('menu_items')
+        menu_items = [sda] + [item for item in menu_items if item != sda]
+    else:
+        sda = 'Texas'
+    df_treat_mot = cost_subset(fn, sda, 1, 4)
+    df_comp_mot = cost_subset(fn, sda, 0, 4)
+    return render_template('cost_mot.html', 
+        title_header=sda,
+        tbl_trt_ot=[df_treat_mot.to_html(classes='data', index=False)],
+        tbl_cmp_ot=[df_comp_mot.to_html(classes='data', index=False)],
+        menu_items=menu_items)
 
-        if not noninter_costs1: 
-            total_nonintercost = 0
-        else:            
-            total_nonintercost = sum(noninter_costs1)
-        
-                
-        if health_outcomes:
-            health_outcomes1 = [float(i) for i in health_outcomes]
-        else:
-            health_outcomes1 = []
-            total_outcomes = 0
+@app.route('/cost-mace-total-6-month-follow-up', methods=("POST", "GET"))
+def cost_mtot_6mo():
+    fn = './data/tmon_cntrl_costs.csv'
+    menu_items = ['Texas', 'MRSA West', 'MRSA Northeast', 'MRSA Central', 'Dallas SDA', 'Nueces SDA', 
+    'Lubbock SDA', 'Jefferson SDA', 'Tarrant SDA', 'Hidalgo SDA']
+    if request.method == 'POST':
+        sda = request.form.get('menu_items')
+        menu_items = [sda] + [item for item in menu_items if item != sda]
+    else:
+        sda = 'Texas'
+    df_treat_mtot = cost_subset(fn, sda, 1, 2)
+    df_comp_mtot = cost_subset(fn, sda, 0, 2)
+    return render_template('cost_mtot.html', 
+        title_header=sda,
+        tbl_trt_tot=[df_treat_mtot.to_html(classes='data', index=False)],
+        tbl_cmp_tot=[df_comp_mtot.to_html(classes='data', index=False)],
+        menu_items=menu_items)
 
-        if not health_outcomes1: 
-            total_outcomes = 0
-        else:            
-            total_outcomes = sum(health_outcomes1)
-    
-        return render_template('data_entry.html',total_intercost=total_intercost, total_nonintercost = total_nonintercost, total_outcomes=total_outcomes)
-    return render_template('data_entry.html')
-
-@app.route('/cea_results',methods=["GET","POST"])
-def cea_results():
-    p1 = request.args.get('p1')
-    p2 = request.args.get('p2')
-    p3 = request.args.get('p3')
-    p4 = request.args.get('p4')
-    p5 = request.args.get('p5')
-    p6 = request.args.get('p6')
-    p7 = request.args.get('p7')
-    p8 = request.args.get('p8')
-    p9 = request.args.get('p9')
-    p10 = request.args.get('p10')
-
-    c1 = request.args.get('c1')
-    c2 = request.args.get('c2')
-    c3 = request.args.get('c3')
-    c4 = request.args.get('c4')
-    c5 = request.args.get('c5')
-    c6 = request.args.get('c6')
-    c7 = request.args.get('c7')
-    c8 = request.args.get('c8')
-    c9 = request.args.get('c9')
-    c10 = request.args.get('c10')
-
-    h1 = request.args.get('h1')
-    h2 = request.args.get('h2')
-    h3 = request.args.get('h3')
-    h4 = request.args.get('h4')
-    h5 = request.args.get('h5')
-    h6 = request.args.get('h6')
-    h7 = request.args.get('h7')
-    h8 = request.args.get('h8')
-    h9 = request.args.get('h9')
-    h10 = request.args.get('h10')
-
-    tot_int1 = request.args.get('tot_int1')
-    tot_int2 = request.args.get('tot_int2')
-    tot_int3 = request.args.get('tot_int3')
-    tot_int4 = request.args.get('tot_int4')
-    tot_int5 = request.args.get('tot_int5')
-    tot_int6 = request.args.get('tot_int6')
-    tot_int7 = request.args.get('tot_int7')
-    tot_int8 = request.args.get('tot_int8')
-    tot_int9 = request.args.get('tot_int9')
-    tot_int10 = request.args.get('tot_int10')
-
-    tot_nonint1 = request.args.get('tot_nonint1')
-    tot_nonint2 = request.args.get('tot_nonint2')
-    tot_nonint3 = request.args.get('tot_nonint3')
-    tot_nonint4 = request.args.get('tot_nonint4')
-    tot_nonint5 = request.args.get('tot_nonint5')
-    tot_nonint6 = request.args.get('tot_nonint6')
-    tot_nonint7 = request.args.get('tot_nonint7')
-    tot_nonint8 = request.args.get('tot_nonint8')
-    tot_nonint9 = request.args.get('tot_nonint9')
-    tot_nonint10 = request.args.get('tot_nonint10')
-
-    tot_out1 = request.args.get('tot_out1')
-    tot_out2 = request.args.get('tot_out2')
-    tot_out3 = request.args.get('tot_out3')
-    tot_out4 = request.args.get('tot_out4')
-    tot_out5 = request.args.get('tot_out5')
-    tot_out6 = request.args.get('tot_out6')
-    tot_out7 = request.args.get('tot_out7')
-    tot_out8 = request.args.get('tot_out8')
-    tot_out9 = request.args.get('tot_out9')
-    tot_out10 = request.args.get('tot_out10')
-
-    tot_nonout1 = request.args.get('tot_nonout1')
-    tot_nonout2 = request.args.get('tot_nonout2')
-    tot_nonout3 = request.args.get('tot_nonout3')
-    tot_nonout4 = request.args.get('tot_nonout4')
-    tot_nonout5 = request.args.get('tot_nonout5')
-    tot_nonout6 = request.args.get('tot_nonout6')
-    tot_nonout7 = request.args.get('tot_nonout7')
-    tot_nonout8 = request.args.get('tot_nonout8')
-    tot_nonout9 = request.args.get('tot_nonout9')
-    tot_nonout10 = request.args.get('tot_nonout10')
-
-    cer1 = round(float(c1)/float(h1),2) if c1 !=None and h1 != None and float(h1) != 0 else None
-    cer2 = round(float(c2)/float(h2),2) if c2 !=None and h2 != None and float(h2) != 0 else None
-    cer3 = round(float(c3)/float(h3),2) if c3 !=None and h3 != None and float(h3) != 0 else None
-    cer4 = round(float(c4)/float(h4),2) if c4 !=None and h4 != None and float(h4) != 0 else None
-    cer5 = round(float(c5)/float(h5),2) if c5 !=None and h5 != None and float(h5) != 0 else None
-    cer6 = round(float(c6)/float(h6),2) if c6 !=None and h6 != None and float(h6) != 0 else None
-    cer7 = round(float(c7)/float(h7),2) if c7 !=None and h7 != None and float(h7) != 0 else None
-    cer8 = round(float(c8)/float(h8),2) if c8 !=None and h8 != None and float(h8) != 0 else None
-    cer9 = round(float(c9)/float(h9),2) if c9 !=None and h9 != None and float(h9) != 0 else None
-    cer10 = round(float(c10)/float(h10),2) if c10 !=None and h10 != None and float(h10) != 0 else None        
-
-
-
-    param_list = [p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,h1,h2,h3,h4,h5,h6,h7,h8,h9,h10,cer1,cer2,cer3,cer4,cer5,cer6,cer7,cer8,cer9,cer10,tot_int1,tot_int2,tot_int3,tot_int4,tot_int5,tot_int6,tot_int7,tot_int8,tot_int9,tot_int10,
-                tot_nonint1,tot_nonint2,tot_nonint3,tot_nonint4,tot_nonint5,tot_nonint6,tot_nonint7,tot_nonint8,tot_nonint9,tot_nonint10,tot_out1,tot_out2,tot_out3,tot_out4,tot_out5,tot_out6,tot_out7,tot_out8,tot_out9,tot_out10,
-                tot_nonout1,tot_nonout2,tot_nonout3,tot_nonout4,tot_nonout5,tot_nonout6,tot_nonout7,tot_nonout8,tot_nonout9,tot_nonout10]
-    n_year = 0
-    sum_period = 0  
-    for i in range(10):
-        if param_list[i + 30] != None:
-            n_year += 1
-            sum_period += param_list[i + 30]
-    param_list.append(sum_period / n_year)
-
-    for i in range(10,20):
-        if float(param_list[i]) < 0:
-            param_list[i] = '$ (' + str(abs(round(float(param_list[i])))) + ')'
-        else:
-            param_list[i] = '$ ' + param_list[i]
-    
-    for i in range(30,60):
-        if param_list[i] != None:
-            if float(param_list[i]) < 0:
-                param_list[i] = '$ (' + str(abs(round(float(param_list[i])))) + ')'
-            else:
-                param_list[i] = '$ ' + param_list[i]
-    
-    for i in range(20,30):
-        if float(param_list[i]) < 0:
-            param_list[i] = '(' + str(abs(round(float(param_list[i]),2))) + ')'
-        else:
-            param_list[i]
-
-    for i in range(60,80):
-        if float(param_list[i]) < 0:
-            param_list[i] = '(' + str(abs(round(float(param_list[i]),2))) + ')'
-        else:
-            param_list[i]
-    for i in range(len(param_list)):
-        print(param_list[i])  
-        #param_list[i] = "{:,}".format(float(param_list[i]))
-    param_list = ["" if x == '$ 0' or x == None or x=='0' else x for x in param_list]
-    
-    avg_cer = param_list[80]
-    summ_cer = avg_cer
-    summ_cer = abs(round(summ_cer))
-    if avg_cer < 0:
-        avg_cer = '(' + str(abs(round(avg_cer))) + ')'
-    
-    return render_template('result.html', param_list = param_list, avg_cer=avg_cer,summ_cer=summ_cer)
+''' 12 mo follow up
 '''
+@app.route('/demo-12-month-follow-up', methods=("POST", "GET"))
+def demo_12mo():
+    fn = './data/tmon_cntrl_demo.csv'
+    menu_items = ['Texas', 'MRSA West', 'MRSA Northeast', 'MRSA Central', 'Dallas SDA', 'Nueces SDA', 
+                'Lubbock SDA', 'Jefferson SDA', 'Tarrant SDA', 'Hidalgo SDA']
+    if request.method == 'POST':
+        sda = request.form.get('menu_items')
+        menu_items = [sda] + [item for item in menu_items if item != sda]
+    else:
+        sda = 'Texas'
+    df_treat = demo_subset(fn, sda, 1)
+    df_comp = demo_subset(fn, sda, 0)
+    return render_template('demo.html', 
+        title_header=sda,
+        table_treat=[df_treat.to_html(classes='data', index=False)],
+        table_comp=[df_comp.to_html(classes='data', index=False)],
+        menu_items=menu_items)
 
+@app.route('/cost-telemonitoring-12-month-follow-up', methods=("POST", "GET"))
+def cost_tm_12mo():
+    fn = './data/tmon_cntrl_costs.csv'
+    menu_items = ['Texas', 'MRSA West', 'MRSA Northeast', 'MRSA Central', 'Dallas SDA', 'Nueces SDA', 
+    'Lubbock SDA', 'Jefferson SDA', 'Tarrant SDA', 'Hidalgo SDA']
+    if request.method == 'POST':
+        sda = request.form.get('menu_items')
+        menu_items = [sda] + [item for item in menu_items if item != sda]
+    else:
+        sda = 'Texas'
+    df_treat_tm = cost_subset(fn, sda, 1, 1)
+    return render_template('cost_tm.html', 
+        title_header=sda,
+        tbl_tmon=[df_treat_tm.to_html(classes='data', index=False)],
+        menu_items=menu_items)
+
+@app.route('/cost-mace-serious-12-month-follow-up', methods=("POST", "GET"))
+def cost_mser_12mo():
+    fn = './data/tmon_cntrl_costs.csv'
+    menu_items = ['Texas', 'MRSA West', 'MRSA Northeast', 'MRSA Central', 'Dallas SDA', 'Nueces SDA', 
+    'Lubbock SDA', 'Jefferson SDA', 'Tarrant SDA', 'Hidalgo SDA']
+    if request.method == 'POST':
+        sda = request.form.get('menu_items')
+        menu_items = [sda] + [item for item in menu_items if item != sda]
+    else:
+        sda = 'Texas'
+    df_treat_mser = cost_subset(fn, sda, 1, 3)
+    df_comp_mser = cost_subset(fn, sda, 0, 3)
+    return render_template('cost_mser.html', 
+        title_header=sda,
+        tbl_trt_ser=[df_treat_mser.to_html(classes='data', index=False)],
+        tbl_cmp_ser=[df_comp_mser.to_html(classes='data', index=False)],
+        menu_items=menu_items)
+
+@app.route('/cost-mace-non-serious-12-month-follow-up', methods=("POST", "GET"))
+def cost_mot_12mo():
+    fn = './data/tmon_cntrl_costs.csv'
+    menu_items = ['Texas', 'MRSA West', 'MRSA Northeast', 'MRSA Central', 'Dallas SDA', 'Nueces SDA', 
+    'Lubbock SDA', 'Jefferson SDA', 'Tarrant SDA', 'Hidalgo SDA']
+    if request.method == 'POST':
+        sda = request.form.get('menu_items')
+        menu_items = [sda] + [item for item in menu_items if item != sda]
+    else:
+        sda = 'Texas'
+    df_treat_mot = cost_subset(fn, sda, 1, 4)
+    df_comp_mot = cost_subset(fn, sda, 0, 4)
+    return render_template('cost_mot.html', 
+        title_header=sda,
+        tbl_trt_ot=[df_treat_mot.to_html(classes='data', index=False)],
+        tbl_cmp_ot=[df_comp_mot.to_html(classes='data', index=False)],
+        menu_items=menu_items)
+
+@app.route('/cost-mace-total-12-month-follow-up', methods=("POST", "GET"))
+def cost_mtot_12mo():
+    fn = './data/tmon_cntrl_costs.csv'
+    menu_items = ['Texas', 'MRSA West', 'MRSA Northeast', 'MRSA Central', 'Dallas SDA', 'Nueces SDA', 
+    'Lubbock SDA', 'Jefferson SDA', 'Tarrant SDA', 'Hidalgo SDA']
+    if request.method == 'POST':
+        sda = request.form.get('menu_items')
+        menu_items = [sda] + [item for item in menu_items if item != sda]
+    else:
+        sda = 'Texas'
+    df_treat_mtot = cost_subset(fn, sda, 1, 2)
+    df_comp_mtot = cost_subset(fn, sda, 0, 2)
+    return render_template('cost_mtot.html', 
+        title_header=sda,
+        tbl_trt_tot=[df_treat_mtot.to_html(classes='data', index=False)],
+        tbl_cmp_tot=[df_comp_mtot.to_html(classes='data', index=False)],
+        menu_items=menu_items)
+
+'''hptn
+'''
+@app.route('/demo-hptn-6-month-follow-up', methods=("POST", "GET"))
+def demo_hptn_6mo():
+    fn = './data/tmon_cntrl_demo_hptn.csv'
+    menu_items = ['Texas', 'MRSA West', 'MRSA Northeast', 'MRSA Central', 'Dallas SDA', 'Nueces SDA', 
+                'Lubbock SDA', 'Jefferson SDA', 'Tarrant SDA', 'Hidalgo SDA']
+    if request.method == 'POST':
+        sda = request.form.get('menu_items')
+        menu_items = [sda] + [item for item in menu_items if item != sda]
+    else:
+        sda = 'Texas'
+    df_treat = demo_subset(fn, sda, 1)
+    df_comp = demo_subset(fn, sda, 0)
+    return render_template('demo.html', 
+        title_header=sda,
+        table_treat=[df_treat.to_html(classes='data', index=False)],
+        table_comp=[df_comp.to_html(classes='data', index=False)],
+        menu_items=menu_items,
+        hptn=True)
+
+@app.route('/cost-telemonitoring-hptn-6-month-follow-up', methods=("POST", "GET"))
+def cost_tm_hptn_6mo():
+    fn = './data/tmon_cntrl_costs_hptn.csv'
+    menu_items = ['Texas', 'MRSA West', 'MRSA Northeast', 'MRSA Central', 'Dallas SDA', 'Nueces SDA', 
+    'Lubbock SDA', 'Jefferson SDA', 'Tarrant SDA', 'Hidalgo SDA']
+    if request.method == 'POST':
+        sda = request.form.get('menu_items')
+        menu_items = [sda] + [item for item in menu_items if item != sda]
+    else:
+        sda = 'Texas'
+    df_treat_tm = cost_subset(fn, sda, 1, 1)
+    return render_template('cost_tm.html', 
+        title_header=sda,
+        tbl_tmon=[df_treat_tm.to_html(classes='data', index=False)],
+        menu_items=menu_items,
+        hptn=True)
+
+@app.route('/cost-mace-serious-hptn-6-month-follow-up', methods=("POST", "GET"))
+def cost_mser_hptn_6mo():
+    fn = './data/tmon_cntrl_costs_hptn.csv'
+    menu_items = ['Texas', 'MRSA West', 'MRSA Northeast', 'MRSA Central', 'Dallas SDA', 'Nueces SDA', 
+    'Lubbock SDA', 'Jefferson SDA', 'Tarrant SDA', 'Hidalgo SDA']
+    if request.method == 'POST':
+        sda = request.form.get('menu_items')
+        menu_items = [sda] + [item for item in menu_items if item != sda]
+    else:
+        sda = 'Texas'
+    df_treat_mser = cost_subset(fn, sda, 1, 3)
+    df_comp_mser = cost_subset(fn, sda, 0, 3)
+    return render_template('cost_mser.html', 
+        title_header=sda,
+        tbl_trt_ser=[df_treat_mser.to_html(classes='data', index=False)],
+        tbl_cmp_ser=[df_comp_mser.to_html(classes='data', index=False)],
+        menu_items=menu_items,
+        hptn=True)
+
+@app.route('/cost-mace-non-serious-hptn-6-month-follow-up', methods=("POST", "GET"))
+def cost_mot_hptn_6mo():
+    fn = './data/tmon_cntrl_costs.csv'
+    menu_items = ['Texas', 'MRSA West', 'MRSA Northeast', 'MRSA Central', 'Dallas SDA', 'Nueces SDA', 
+    'Lubbock SDA', 'Jefferson SDA', 'Tarrant SDA', 'Hidalgo SDA']
+    if request.method == 'POST':
+        sda = request.form.get('menu_items')
+        menu_items = [sda] + [item for item in menu_items if item != sda]
+    else:
+        sda = 'Texas'
+    df_treat_mot = cost_subset(fn, sda, 1, 4)
+    df_comp_mot = cost_subset(fn, sda, 0, 4)
+    return render_template('cost_mot.html', 
+        title_header=sda,
+        tbl_trt_ot=[df_treat_mot.to_html(classes='data', index=False)],
+        tbl_cmp_ot=[df_comp_mot.to_html(classes='data', index=False)],
+        menu_items=menu_items,
+        hptn=True)
+
+@app.route('/cost-mace-total-hptn-6-month-follow-up', methods=("POST", "GET"))
+def cost_mtot_hptn_6mo():
+    fn = './data/tmon_cntrl_costs_hptn.csv'
+    menu_items = ['Texas', 'MRSA West', 'MRSA Northeast', 'MRSA Central', 'Dallas SDA', 'Nueces SDA', 
+    'Lubbock SDA', 'Jefferson SDA', 'Tarrant SDA', 'Hidalgo SDA']
+    if request.method == 'POST':
+        sda = request.form.get('menu_items')
+        menu_items = [sda] + [item for item in menu_items if item != sda]
+    else:
+        sda = 'Texas'
+    df_treat_mtot = cost_subset(fn, sda, 1, 2)
+    df_comp_mtot = cost_subset(fn, sda, 0, 2)
+    return render_template('cost_mtot.html', 
+        title_header=sda,
+        tbl_trt_tot=[df_treat_mtot.to_html(classes='data', index=False)],
+        tbl_cmp_tot=[df_comp_mtot.to_html(classes='data', index=False)],
+        menu_items=menu_items,
+        hptn=True)
+
+
+'''12 mo follow up
+'''
+@app.route('/demo-hptn-12-month-follow-up', methods=("POST", "GET"))
+def demo_hptn_12mo():
+    fn = './data/tmon_cntrl_demo_hptn.csv'
+    menu_items = ['Texas', 'MRSA West', 'MRSA Northeast', 'MRSA Central', 'Dallas SDA', 'Nueces SDA', 
+                'Lubbock SDA', 'Jefferson SDA', 'Tarrant SDA', 'Hidalgo SDA']
+    if request.method == 'POST':
+        sda = request.form.get('menu_items')
+        menu_items = [sda] + [item for item in menu_items if item != sda]
+    else:
+        sda = 'Texas'
+    df_treat = demo_subset(fn, sda, 1)
+    df_comp = demo_subset(fn, sda, 0)
+    return render_template('demo.html', 
+        title_header=sda,
+        table_treat=[df_treat.to_html(classes='data', index=False)],
+        table_comp=[df_comp.to_html(classes='data', index=False)],
+        menu_items=menu_items,
+        hptn=True)
+
+@app.route('/cost-telemonitoring-hptn-12-month-follow-up', methods=("POST", "GET"))
+def cost_tm_hptn_12mo():
+    fn = './data/tmon_cntrl_costs_hptn.csv'
+    menu_items = ['Texas', 'MRSA West', 'MRSA Northeast', 'MRSA Central', 'Dallas SDA', 'Nueces SDA', 
+    'Lubbock SDA', 'Jefferson SDA', 'Tarrant SDA', 'Hidalgo SDA']
+    if request.method == 'POST':
+        sda = request.form.get('menu_items')
+        menu_items = [sda] + [item for item in menu_items if item != sda]
+    else:
+        sda = 'Texas'
+    df_treat_tm = cost_subset(fn, sda, 1, 1)
+    return render_template('cost_tm.html', 
+        title_header=sda,
+        tbl_tmon=[df_treat_tm.to_html(classes='data', index=False)],
+        menu_items=menu_items,
+        hptn=True)
+
+@app.route('/cost-mace-serious-hptn-12-month-follow-up', methods=("POST", "GET"))
+def cost_mser_hptn_12mo():
+    fn = './data/tmon_cntrl_costs_hptn.csv'
+    menu_items = ['Texas', 'MRSA West', 'MRSA Northeast', 'MRSA Central', 'Dallas SDA', 'Nueces SDA', 
+    'Lubbock SDA', 'Jefferson SDA', 'Tarrant SDA', 'Hidalgo SDA']
+    if request.method == 'POST':
+        sda = request.form.get('menu_items')
+        menu_items = [sda] + [item for item in menu_items if item != sda]
+    else:
+        sda = 'Texas'
+    df_treat_mser = cost_subset(fn, sda, 1, 3)
+    df_comp_mser = cost_subset(fn, sda, 0, 3)
+    return render_template('cost_mser.html', 
+        title_header=sda,
+        tbl_trt_ser=[df_treat_mser.to_html(classes='data', index=False)],
+        tbl_cmp_ser=[df_comp_mser.to_html(classes='data', index=False)],
+        menu_items=menu_items,
+        hptn=True)
+
+@app.route('/cost-mace-non-serious-hptn-12-month-follow-up', methods=("POST", "GET"))
+def cost_mot_hptn_12mo():
+    fn = './data/tmon_cntrl_costs.csv'
+    menu_items = ['Texas', 'MRSA West', 'MRSA Northeast', 'MRSA Central', 'Dallas SDA', 'Nueces SDA', 
+    'Lubbock SDA', 'Jefferson SDA', 'Tarrant SDA', 'Hidalgo SDA']
+    if request.method == 'POST':
+        sda = request.form.get('menu_items')
+        menu_items = [sda] + [item for item in menu_items if item != sda]
+    else:
+        sda = 'Texas'
+    df_treat_mot = cost_subset(fn, sda, 1, 4)
+    df_comp_mot = cost_subset(fn, sda, 0, 4)
+    return render_template('cost_mot.html', 
+        title_header=sda,
+        tbl_trt_ot=[df_treat_mot.to_html(classes='data', index=False)],
+        tbl_cmp_ot=[df_comp_mot.to_html(classes='data', index=False)],
+        menu_items=menu_items,
+        hptn=True)
+
+@app.route('/cost-mace-total-hptn-12-month-follow-up', methods=("POST", "GET"))
+def cost_mtot_hptn_12mo():
+    fn = './data/tmon_cntrl_costs_hptn.csv'
+    menu_items = ['Texas', 'MRSA West', 'MRSA Northeast', 'MRSA Central', 'Dallas SDA', 'Nueces SDA', 
+    'Lubbock SDA', 'Jefferson SDA', 'Tarrant SDA', 'Hidalgo SDA']
+    if request.method == 'POST':
+        sda = request.form.get('menu_items')
+        menu_items = [sda] + [item for item in menu_items if item != sda]
+    else:
+        sda = 'Texas'
+    df_treat_mtot = cost_subset(fn, sda, 1, 2)
+    df_comp_mtot = cost_subset(fn, sda, 0, 2)
+    return render_template('cost_mtot.html', 
+        title_header=sda,
+        tbl_trt_tot=[df_treat_mtot.to_html(classes='data', index=False)],
+        tbl_cmp_tot=[df_comp_mtot.to_html(classes='data', index=False)],
+        menu_items=menu_items,
+        hptn=True)
+
+
+
+''' end marg additions
+'''
 if __name__ == "__main__":
     app.run(debug=True) 
