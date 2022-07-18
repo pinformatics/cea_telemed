@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type = text/css href="{{ url_for('static', filename= 'css/main.css') }}">
+    <title>Cost Study: Total Medical Cost</title>
+
+</head>
+<body>
+
+{% extends "base1.html" %}
+{% block sidebar %}
+<li>
+    <form name="Item_1" action="/cea/medcost" method="POST">
+        <div>
+            <label for="exampleFormControlFile2" >Choose Region</label>
+            <select name="sda">
+                <option value = ""></option>
+                {% for district in sda %}
+                <option value="{{ district}}">{{ district }}</option>
+                {% endfor %}
+            </select>
+            <input type ="submit" value="Submit">
+        </div>
+    </form>
+</li>
+<br>
+<li><a href="#Clients">Number of Clients</a></li>
+<li><a href="#Pre_Cost">Pre Cost Table</a></li>
+<li><a href="#Post_Cost">Post Cost Table</a></li>
+<li><a href ="#Top">Back to Top</a></li>
+{% endblock sidebar %}
+
+
+{% block content %}
+
+<center><h1 style="margin-top: 100px;">Cost Study: Total Medical Cost</h1></center>
+<hr color = "black" style="width:50%;text-align:center;border-bottom: 4px double">
+
+<center><h2>Term Definitions</h2></center>
+<div style="margin: 15px 20px 10px 100px">
+    <div style="display: inline-block; text-align: left;">
+        <b>Client:</b> An individual engaged in Medicaid services. <br/>
+        <br>
+        <b>Treatment Group:</b> Group of tele clients with shared common characteristics (for example, they received services in the same State Fiscal Year, used the same teleservice types,
+        belonged to the same Medicaid risk groups, had similar comorbidity indices, had the same specified chronic diseases, had similar demographics, etc.). <br/>
+        <br>
+        <b>Comparison Group:</b> Group of non-tele clients who closely match the tele clients of a treatment group. <br/>
+        <b>Teleservices:</b> Service delivered through telemedicine, telehealth, and telemonitoring, as defined by the state of Texas.	<br><br>
+        <b>Tele visit:</b> Category of teleservices in which the client’s visit with a provider or health care professional is done virtually rather than in person. <br>
+        Tele visits encompass both telemedicine and telehealth services but not telemonitoring. Telemonitoring is a separate category since the mode of service provision is significantly different. <br><br>
+        <b>Telemonitoring:</b> defined in Texas Government Code §531.001(4-a) as the
+        “...scheduled remote monitoring of data related to a patient's health and transmission of the data to a licensed home and community support services agency or a hospital."
+        In the Texas Medicaid program, home telemonitoring requires an RN or other qualified health care professional. <br><br>
+        <b>Medicaid Risk Groups:</b> Specified groups of clients of particular interest to policy makers. Risk groups are created based on Medicaid category of assistance program. Risk groups distinguished in this report include: <br>
+        <div style="margin: 0px 20px 0px 50px">
+            <b>Blind/Disabled</b> – Medicaid clients identified as blind and / or disabled in the Medicaid assistance program and those identified with coverage in the breast and cervical cancer program (BCCP); 	<br>
+            <b>Child</b> – Medicaid clients aged 21 years and younger and those in the foster care, adoption, and those that have coverage in the Texas Temporary Assistance for Needy Families (TANF) program;	<br>
+            <b>Other</b> – Combines the following groups	<br>
+        </div>
+
+        <div style="margin: 0px 20px 0px 100px">
+            <b>Parents</b> – Medicaid clients 21 to 65 years of age enrolled in any program for any type for parental reason.<br>
+            <b>Aged</b> – Medicaid clients aged 65 and older in the aged assistance program; <br>
+            <b>Pregnant</b> – Medicaid clients in the pregnant program;
+        </div>
+        <br>
+        <b>Pre-cost: </b> Total medical or pharmaceutical costs for the six-month period preceding an index month. Does not include the index month</a>. <br>
+        <b>Post-cost:</b> Total medical or pharmaceutical costs for the six-month period following an index month. Does not include the index month</a>.
+
+
+    </div>
+</div>
+
+<div style="margin-left: 80px;">
+    <br id="Clients">
+    <br>
+    <center><u><h2>Number of Clients for Texas</h2></u></center>
+
+    <center>
+        <table class="mytable" >
+            <tr>
+                <td>&nbsp;</td>
+
+                <td colspan="8"><b>Tele Visits</b></td>
+
+                <td colspan="2"><b>Telemonitoring</b></td>
+
+            </tr>
+        </table>
+
+        <table class = 'mytable'>
+            <tr>
+                <td>&nbsp;</td>
+                <td colspan="2"><b>Blind/Disabled</b></td>
+                <td colspan="2"><b>Child</b></td>
+                <td colspan="2"><b>Other</b></td>
+                <td colspan="2"><b>Total</b></td>
+                <td colspan="2"><b>Total</b></td>
+
+            </tr>
+        </table>
+
+        {% for table in texas_numclient %}
+        {{table|safe}}
+        {% endfor %}
+
+    </center>
+
+
+    <br id="Pre_Cost">
+    <br>
+    <center><u><h2>Pre Cost Table for Texas</h2></u></center>
+
+
+    <center>
+        <table class="mytable" >
+            <tr>
+                <td>&nbsp;</td>
+
+                <td colspan="8"><b>Tele Visits</b></td>
+
+                <td colspan="2"><b>Telemonitoring</b></td>
+
+            </tr>
+        </table>
+
+        <table class = 'mytable'>
+            <tr>
+                <td>&nbsp;</td>
+                <td colspan="2"><b>Blind/Disabled</b></td>
+                <td colspan="2"><b>Child</b></td>
+                <td colspan="2"><b>Other</b></td>
+                <td colspan="2"><b>Total</b></td>
+                <td colspan="2"><b>Total</b></td>
+
+            </tr>
+        </table>
+
+        {% for table in texas_precost_final %}
+        {{table|safe}}
+        {% endfor %}</center>
+
+
+
+    <br id="Post_Cost"><br>
+    <center><u><h2>Post Cost Table for Texas</h2></u></center>
+
+
+    <center>
+        <table class="mytable" >
+            <tr>
+                <td>&nbsp;</td>
+
+                <td colspan="8"><b>Tele Visits</b></td>
+
+                <td colspan="2"><b>Telemonitoring</b></td>
+
+            </tr>
+        </table>
+
+        <table class = 'mytable'>
+            <tr>
+                <td>&nbsp;</td>
+                <td colspan="2"><b>Blind/Disabled</b></td>
+                <td colspan="2"><b>Child</b></td>
+                <td colspan="2"><b>Other</b></td>
+                <td colspan="2"><b>Total</b></td>
+                <td colspan="2"><b>Total</b></td>
+
+            </tr>
+        </table>
+
+
+        {% for table in texas_postcost_final %}
+        {{table|safe}}
+        {% endfor %}</center>
+    <br><br>
+</div>
+</div>
+</body>
+{% endblock content %}
+</html>

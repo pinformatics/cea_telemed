@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+    <head>    
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="{{ url_for('static', filename= 'css/main.css') }}">
+        <title>Cost Effective Analysis Tool</title>
+        
+    </head>
+
+
+    <body>  
+
+      <div class="navbar" id="Top">
+        <a href="https://sites.google.com/view/pinformatics/data-science/cost-study-resources?authuser=0" target="_blank">Documents</a>
+        <a href="https://sites.google.com/view/pinformatics/data-science/public-data-resources?authuser=0" target="_blank">Other Data Resources</a>
+        <div class="dropdown">
+          <button class="dropbtn">Inpatient Costs
+            <i class="fa fa-caret-down"></i>
+          </button>
+        <div class="dropdown-content">
+          <a href="mental-health">Mental Health</a>
+          <a href="heart-conditions">Heart conditions</a>
+        </div>
+        </div>
+        
+        <div class="dropdown">
+          <button class="dropbtn">Cost Study 
+            <i class="fa fa-caret-down"></i>
+          </button>
+          <div class="dropdown-content">
+            <a href="demographics">Demographics</a>
+            <a href="medcost">Total Medical Cost</a>
+            <a href="inpatcost">Inpatient Care Cost</a>
+            <a href="edcost">ED Cost</a>
+            <a href="outpatcost">Outpatient Care Cost</a>
+          </div>
+        </div>  
+        <a href="{{url_for('download_file')}}" target="_blank">CEA</a>
+    
+        </div>
+          
+
+        <center><h1>Documents </h1></center>
+        <hr color = "black" style="width:50%;text-align:center;border-bottom: 4px double">
+        <h3><a href="Teleservices_Cost_Report_2020.pdf">Teleservices Cost Report</a></h3>
+        <center><h2>Definitions</h2></center>
+        <div style="margin: 15px 20px 10px 275px">
+          <div style="display: inline-block; text-align: left;">
+            <b id="index-month">Index month:</b> A client’s index month is any month that satisfies these conditions: <br><br>
+            <div style="margin: 0px 20px 0px 50px" class="b">
+            1. The client’s index month must have continuous Medicaid eligibility in the six months before (pre-period) and in the six months after (post-period) the index month; <br>
+            2. The client’s index month must have positive pre-costs (defined below);<br>
+            3. For non-tele clients, the client’s index month is the first month satisfying 1 & 2 above; <br>
+            4. For tele clients, the client’s index month is the month of the first teleservice encounter. <br>
+            5. Note that clients without a definable index month will be excluded from the study. These will be clients who have no month of eligibility that satisfies the conditions above. 
+            More explicitly, these will be clients who either do not have at least 13 months of continuous eligibility, or, if they do, have no claims in any of those months of eligibility, except perhaps in the last seven months of eligibility (implying zero pre-cost, as defined 
+            below). Clients who do not have an index month cannot be accurately assessed and are thus not included in the study.
+
+            </div>  
+          </div>
+        </div>
+        
+
+    </body>
+</html>
+
+  

@@ -1,0 +1,46 @@
+<body>
+<div class="wrapper">
+    <div class="sidebar">
+        <ul>
+            <br>
+            {% block sidebar %}{% endblock sidebar %}
+        </ul>
+    </div>
+
+    <div  id="Top" class="main_content">
+
+        <div class="navbar">
+            <ul>
+                <li>
+                    <a href="https://sites.google.com/view/pinformatics/data-science/cost-study-resources?authuser=0" target="_blank">Documents</a>
+                </li>
+                <li>
+                    <a href="https://sites.google.com/view/pinformatics/data-science/public-data-resources?authuser=0" target="_blank">Other Data Resources</a>
+                </li>
+                <div class="dropdown">
+                    <button class="dropbtn">Inpatient Costs</button>
+                    <div class="dropdown-content">
+                        <a href="mental-health">Mental Health</a>
+                        <a href="heart-conditions">Heart Conditions</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <button class="dropbtn">Cost Study</button>
+                    <div class="dropdown-content">
+                        <a href="/cea/demographics">Demographics</a>
+                        <a href="/cea/medcost">Total Medical Cost</a>
+                        <a href="/cea/inpatcost">Inpatient Care Cost</a>
+                        <a href="/cea/edcost">ED Cost</a>
+                        <a href="/cea/outpatcost">Outpatient Care Cost</a>
+                    </div>
+                </div>
+                <li>
+                    <a href="/cea/home">Home</a>
+                </li>
+            </ul>
+        </div>
+        {% block content %}{% endblock content %}
+    </div>
+</div>
+
+</body>

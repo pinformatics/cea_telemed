@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type = text/css href="{{ url_for('static', filename= 'css/main.css') }}">
+</head>
+<body>
+
+{% extends "base1.html" %}
+{% block sidebar %}
+<br>
+<li><a href="#Top">CEA Basic Tool </a></li>
+<li><a href="#tool_methods">CEA Tool Methods Manual</a></li>
+<li><a href="#download_data">Download Data Products</a></li>
+<li><a href = "#Top">Back to Top</a></li>
+{% endblock sidebar %}
+
+{% block content %}
+<center><h1 style="margin-top: 100px;">Home</h1></center>
+<div style="margin-left: 100px">
+<h4 id="CEA"> CEA Basic Tool: </h4>
+<a href="/cea/download_cea" target="_blank">Excel File</a> <br>
+<h4>Video Tutorial: </h4>
+<ul>
+<li>Youtube Playlist: <a href="https://www.youtube.com/playlist?list=PLnBH5Dx2WPuvoHsA26WSZtfHmL6mIq_GC" target="_blank">CEA-basic Tutorial Playlist</a> </li> <br>
+<li>Zip File of Playlist: <a href="https://drive.google.com/file/d/1mwpZGNjyOjOgUwe4Btk0BVOIUkDmPCxl/view?usp=sharing" target="_blank">CEA-basic Tutorial Playlist (.zip)</a> </li> <br>
+
+<li>Individual Videos:</li>
+<ul>
+    <li><a href="https://drive.google.com/file/d/16NYU4zYwcJ1iHtsQLEXFPZEEfEAmRhjR/view?usp=sharing" target="_blank">1 - CEA Basic Tool Overview</a></li>
+    <a>This video provides a brief overview of each sheet in the CEA-basic tool.</a><br>
+    <br>
+    <li><a href="https://drive.google.com/file/d/1_DbLlqTkAMEsmfAxoHSaJy82bP-9CHMg/view?usp=sharing" target="_blank">2 - Readme & Interpretation</a></li>
+    <a>This video discusses the details of the Readme sheet and the Interpretation sheet.</a><br>
+    <br>
+    <li><a href="https://drive.google.com/file/d/1tTVxHERjCfaOJ6H2ukLr711ii64BYCH5/view?usp=sharing" target="_blank">3 - Case Study Overview</a></li>
+    <a>This video goes over the details of the case study we created for this tutorial, as well as an important disclaimer at the top of the CEA Plan sheet.</a><br>
+    <br>
+    <li><a href="https://drive.google.com/file/d/1FzLrZM34GNRBvPkHUChNNWpqJ4m3znSo/view?usp=sharing" target="_blank">4 - CEA Plan, Sections 1 & 2</a></li>
+    <a>This video discusses sections 1 & 2 of the CEA Plan within the context of the case study.  </a><br>
+    <br>
+    <li><a href="https://drive.google.com/file/d/16My8q-GoJZVAp7zxZ128HPu8Kp9DBAQI/view?usp=sharing" target="_blank">5 - CEA Plan, Sections 3 - 5</a></li>
+    <a>This video discusses sections 3 - 5 of the CEA Plan sheet within the context of the case study.</a><br>
+    <br>
+    <li><a href="https://drive.google.com/file/d/1LQxzmLeCAjg18blFwpRQ-5_zb1tobNXZ/view?usp=sharing" target="_blank">6 - CEA Data Entry</a></li>
+    <a>This video discusses how to enter data in the CEA Data Entry sheet within the context of the case study. Additionally, it discusses how to interpret the Average Incremental Cost Effectiveness Ratio (ICER).</a><br>
+    <br>
+</ul>
+</ul>
+<h4 id='tool_methods'>CEA Tool Methods Manual:</h4>
+<a href="/cea/download_ceatool" target="_blank">CEA Tool Methods Manual</a> <br>
+
+<h4 id="download_data">Download Data Products: </h4>
+<ul>
+    <li><a href="/cea/download_cost_study" target="_blank">Cost Study Data</a></li>
+    <li><a href="/cea/download_inpatcost" target="_blank">Inpatient Costs Data</a></li>
+</ul>
+</div>
+</body>
+{% endblock content %}
+</html>

@@ -1,0 +1,132 @@
+    {% extends "base.html" %}
+    {% block content %}
+      <center><h1>CEA Design</h1></center>
+      <center><h3><u>DISCLAIMER: These questions are solely used to facilitate thinking through the CEA processess. Not all questions are required/applicable.</u></h3></center>
+      <br><br>
+      <div style="margin-left: 20%;">
+        <div style="display: inline-block; text-align: left;">
+      <form method = "POST" action="data_entry">
+        
+        <label for="inter_desc"> Intervention Description: </label>
+        <textarea id="inter_desc" style="margin-left:50px" name="inter_desc" rows ="1" cols="65" placeholder="e.g., TM for Diabetes; Televists for Blind/Disabled"></textarea>
+
+        <br><br>
+        <label for="health_desc"> Health Outcome Description: </label>
+        <textarea id="health_desc" style="margin-left:50px" name="health_desc" rows ="1" cols="65" placeholder="e.g., Hospitalizations; stroke; ED usage"></textarea>
+
+        <br><br>
+        
+          <div style="display: inline-block; text-align: right;">
+        <label for="study_obj"> Study Objective: </label>
+        <select name="study_obj" id = "study_obj" style="margin-left:50px"> 
+          <option value="max_outcome"> Maximize Health Outcome</option>
+          <option value="min_outcome"> Minimize Health Outcome</option>
+        </select>
+        </div>
+        
+        
+
+        <br><br>
+        <label for="study_pers"> Study Perspective: </label>
+        <textarea id="study_pers" style="margin-left:50px" name="study_pers" rows ="1" cols="65" placeholder="e.g., MCO; Societal"></textarea>
+
+        <br><br>
+        <label for="criteria">What are the criteria for evaluating the cost effectiveness ratio? </label>
+        <textarea id="criteria" style="margin-left:50px" name="criteria" rows ="1" cols="65" placeholder="e.g., How much are you willing to spend to avoid a stroke?"></textarea>
+        <br><br>
+        <hr color = "black" style="width:100%;text-align:center;border-bottom: 3px double">
+      </div>
+    </div>
+
+    <div style="margin-left: 20%;">
+      <div style="display: inline-block; text-align: right;">
+        <table>
+          <tr>
+            <th></th>
+            <th style="text-align: center;padding: 15px;">Size</th>
+            <th style="text-align: center; padding: 15px;">Inclusion/Exclusion criteria <br>(e.g. age, comorbidity, race, sex, socioeconomic status, dual eligibility)</th>
+          </tr>
+          <tr></tr>
+          <tr>
+            <td><b>Intervention (Treatment) Cohort</b></td>
+            <td><textarea id="interv_size" style="margin-left:50px" name="interv_size" rows ="1" cols="10"></textarea></td>
+            <td><textarea id="interv_crit" style ="margin:auto" name="interv_crit" rows ="1" cols="70" placeholder="(e.g. Age, Comorbidity, Race, Sex, Socioeconomic Status, Dual Eligibility)"></textarea></td>
+          </tr>
+          <tr>
+            <td><b> Non Intervention (Comparison) Cohort</b></td>
+            <td><textarea id="noninterv_size" style="margin-left:50px" name="noninterv_size" rows ="1" cols="10"></textarea></td>
+            <td><textarea id="noninterv_crit" style ="margin:auto" name="noninterv_crit" rows ="1" cols="70" placeholder="(e.g. Age, Comorbidity, Race, Sex, Socioeconomic Status, Dual Eligibility)"></textarea></td>
+          </tr>
+        </table>
+        <br>
+        <hr color = "black" style="width:100%;text-align:center;border-bottom: 3px double">
+        <br/>
+      </div>
+      </div>
+        
+
+      </form>
+      <form method = "POST" action ="data_entry" >      
+
+      <div style="margin-left: 20%;">
+      <div style="display: inline-block; text-align: left;">
+        <label for="study_dur">Study Duration: </label>
+        <textarea id="study_dur" style="margin-left:50px" name="study_dur" rows ="1" cols="50" placeholder="(e.g., Number of years studied)"></textarea>     
+        <br><br>
+        
+        <table>
+        <tr>
+        <td style="padding-right: 75px;">
+        <legend><b>Intervention Costs:</b></legend>
+        <br>
+        
+        <input type="checkbox" name="med_cost" value="med_cost">Medical Costs (e.g., Inpatient, Outpatient, ED)<br>      
+        <input type="checkbox" name="nonmed_cost" value="nonmed_cost">Non-Medical Costs<br>      
+        <input type="checkbox" name="pharm_cost" value="pharm_cost">Pharmacy Costs<br> 
+        <input type="checkbox" name="medsupply_cost" value="medsupply_cost">Medical Supply Costs<br>      
+        <input type="checkbox" name="tech_cost" value="tech_cost">Technology Costs<br> 
+        <input type="checkbox" name="nurse_cost" value="nurse_cost">Nursing Costs<br> 
+        <input type="checkbox" name="diag_cost" value="diag_cost">Diagnostic Costs<br> 
+        <input type="checkbox" name="other" value="other">Other: <textarea id="other" style="margin-left:10px" name="other" rows ="1" cols="30"></textarea> <br> 
+        </td>
+        <td>&ensp;</td>
+        <td>
+        <legend><b>Health Outcomes:</b></legend>
+        <br>
+        <input type="checkbox" name="hospit" value="hospit">Hospitalizations<br>      
+        <input type="checkbox" name="em_care" value="em_care">Emergency Department (ED) Care<br>   
+        <input type="checkbox" name="read_mis" value="read_mis">Readmissions<br>      
+        <input type="checkbox" name="rehab" value="rehab">Rehabilitation<br> 
+        <input type="checkbox" name="acute_care" value="acute_care">Acute Care<br> 
+        <input type="checkbox" name="long_care" value="long_care">Long-Term Care (e.g., home health)<br> 
+        <input type="checkbox" name="lost_prod" value="lost_prod">Lost Productivity<br> 
+        <input type="checkbox" name="other1" value="other1">Other: <textarea id="other1" style="margin-left:10px" name="other1" rows ="1" cols="30"></textarea><br> 
+      </td>
+      </table>
+        <br>
+        <hr color = "black" style="width:140%;text-align:center;border-bottom: 3px double">
+      </div>
+      </div>
+
+      <div style="margin-left: 20%;">
+      <div style="display: inline-block; text-align: left;">
+        <label for="data_source">Data Sources: </label>
+        <textarea id="data_source" style="margin-left:50px" name="data_source" rows ="1" cols="65" placeholder="e.g., Claims/Encounters, PUDF, Public Data Sources"></textarea>
+        
+        <br><br>
+        <label for="team_memb">Study Team Members: </label>
+        <textarea id="team_memb" style="margin-left:50px" name="team_memb" rows ="1" cols="65" ></textarea>
+
+        <br><br>
+        <label for="comments">Other Comments/Notes: </label>
+        <textarea id="comments" style="margin-left:50px" name="comments" rows ="1" cols="65" placeholder="eg., Personal Notes"></textarea>
+        <br><br>        
+      </div>
+      </div>
+      <center><input class = "btn btn-primary" type = "submit" value = "Next" target="data_entry"></center>
+      <br>
+      </form>
+      {% endblock content %} 
+
+
+  

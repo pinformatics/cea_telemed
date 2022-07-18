@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type = text/css href="{{ url_for('static', filename= 'css/main.css') }}">
+    <title>Heart Condition Cost Lookup</title>
+
+</head>
+
+
+<body>
+{% extends "base1.html" %}
+{% block sidebar %}
+<li>
+    <form name="Item_1" action="/cea/heart-conditions" method="POST">
+        <div>
+            <label for="exampleFormControlFile2">Choose Region</label>
+            <select name="sda_hosp">
+                <option value = ""></option>
+                {% for district in sda_hosp %}
+                <option value="{{district}}">{{ district }}</option>
+                {% endfor %}
+            </select>
+            <input type ="submit" value="Submit">
+        </div>
+    </form>
+</li>
+{% endblock sidebar %}
+
+{% block content %}
+
+<div style="margin-left: 80px;">
+    <center><h1 style="margin-top: 100px;">Heart Condition Cost Lookup for {{sda_hosp_name}}</h1></center>
+    <hr color = "black" style="width:50%;text-align:center;border-bottom: 4px double">
+    <br>
+    <div class="hosp">
+        <center>
+            {% for table in region_heart %}
+            {{table|safe}}
+            {% endfor %}</center>
+        <br>
+    </div>
+</div>
+</body>
+{% endblock content %}
+</html>

@@ -1,0 +1,20 @@
+{% extends "base1.html" %}
+
+{% block content %}
+
+        <center><h1>Cost Effectiveness Analysis Tool </h1></center>
+        <center><h3>In order to use the CEA tool, </h3></center>
+        <div style="text-align: center;">
+          <div style="display: inline-block; text-align: left;">
+        <!--<h3><u>Step 1:</u> <a href="https://docs.google.com/spreadsheets/d/17bs9j7og7yYSvlyjvVUm6P8xL2HsUgXYwAdMTz7m1ss/view#gid=0" target="_blank">Click here to use the Cost Effectiveness Analysis Tool</a></h3>-->
+        <h3><u>Step 1:</u> <a href="{{url_for('download_file')}}" target="_blank">Click here to download and use the Cost Effectiveness Analysis Tool</a></h3>
+
+        <h3><u>Step 2:</u> Make a copy of the sheet by clicking File &rarr; Make a copy <br> Note: You must sign in to a Google account in order to make a copy.</h3>
+        <h3><u>Step 3:</u> Enter the necessary data in the colored cells. <br> Take note/bookmark this spreadsheet so you can return to this sheet to modify/edit later if necessary.</h3>
+        <h3><u>Step 4:</u> When you have finished entering data, click on the "Submit" button in the spreadsheet. <br>Note: Hover over the submit button and click on the link that navigates you back to the website.</h3>
+          </div>
+        </div>
+
+
+      
+{% endblock content %} 

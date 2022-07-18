@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<center><h1>Cost Effectiveness Ratio (CER) </h1></center>
+<center>
+<table class="result">
+  <tr>
+    <th rowspan="2">Study Period</th>
+    <th colspan="2">Total Costs</th>
+    <th rowspan="2">Cost Difference</th>
+    <th colspan="2">Total Health Outcomes</th>
+    <th rowspan="2">Health Outcome Difference</th>
+    <th rowspan="2">CER</th>
+  </tr>
+  <tr>
+  <th>Intervention</th>
+  <th>Non-Intervention</th>
+  <th>Intervention</th>
+  <th>Non-Intervention</th>
+  </tr>
+  {% if param_list[0] != "" %}
+  <tr>
+    <td>{{param_list[0]}}</td>
+    <td>{{param_list[40]}}</td>
+    <td>{{param_list[50]}}</td>
+    <td>{{param_list[10]}}</td>
+    <td>{{param_list[60]}}</td>
+    <td>{{param_list[70]}}</td>
+    <td>{{param_list[20]}}</td>
+    <td>{{param_list[30]}}</td>
+  </tr>
+  {% endif %}
+  {% if param_list[1] != "" %}
+  <tr>
+    <td>{{param_list[1]}}</td>
+    <td>{{param_list[41]}}</td>
+    <td>{{param_list[51]}}</td>
+    <td>{{param_list[11]}}</td>
+    <td>{{param_list[61]}}</td>
+    <td>{{param_list[71]}}</td>
+    <td>{{param_list[21]}}</td>
+    <td>{{param_list[31]}}</td>
+  </tr>
+  {% endif %}
+  {% if param_list[2] != "" %}
+  <tr>
+    <td>{{param_list[2]}}</td>
+    <td>{{param_list[42]}}</td>
+    <td>{{param_list[52]}}</td>
+    <td>{{param_list[12]}}</td>
+    <td>{{param_list[62]}}</td>
+    <td>{{param_list[72]}}</td>
+    <td>{{param_list[22]}}</td>
+    <td>{{param_list[32]}}</td>
+  </tr>
+  {% endif %}
+  {% if param_list[3] != "" %}
+  <tr>
+    <td>{{param_list[3]}}</td>
+    <td>{{param_list[43]}}</td>
+    <td>{{param_list[53]}}</td>
+    <td>{{param_list[13]}}</td>
+    <td>{{param_list[63]}}</td>
+    <td>{{param_list[73]}}</td>
+    <td>{{param_list[23]}}</td>
+    <td>{{param_list[33]}}</td>
+  </tr>
+  {% endif %}
+  {% if param_list[4] != "" %}
+  <tr>
+    <td>{{param_list[4]}}</td>
+    <td>{{param_list[44]}}</td>
+    <td>{{param_list[54]}}</td>
+    <td>{{param_list[14]}}</td>
+    <td>{{param_list[64]}}</td>
+    <td>{{param_list[74]}}</td>
+    <td>{{param_list[24]}}</td>
+    <td>{{param_list[34]}}</td>
+  </tr>
+  {% endif %}
+  {% if param_list[5] != "" %}
+  <tr>
+    <td>{{param_list[5]}}</td>
+    <td>{{param_list[45]}}</td>
+    <td>{{param_list[55]}}</td>
+    <td>{{param_list[15]}}</td>
+    <td>{{param_list[65]}}</td>
+    <td>{{param_list[75]}}</td>
+    <td>{{param_list[25]}}</td>
+    <td>{{param_list[35]}}</td>
+  </tr>
+  {% endif %}
+  {% if param_list[6] != "" %}
+  <tr>
+    <td>{{param_list[6]}}</td>
+    <td>{{param_list[46]}}</td>
+    <td>{{param_list[56]}}</td>
+    <td>{{param_list[16]}}</td>
+    <td>{{param_list[66]}}</td>
+    <td>{{param_list[76]}}</td>
+    <td>{{param_list[26]}}</td>
+    <td>{{param_list[36]}}</td>
+  </tr>
+  {% endif %}
+  {% if param_list[7] != "" %}
+  <tr>
+    <td>{{param_list[7]}}</td>
+    <td>{{param_list[47]}}</td>
+    <td>{{param_list[57]}}</td>
+    <td>{{param_list[17]}}</td>
+    <td>{{param_list[67]}}</td>
+    <td>{{param_list[77]}}</td>
+    <td>{{param_list[27]}}</td>
+    <td>{{param_list[37]}}</td>
+  </tr>
+  {% endif %}
+  {% if param_list[8] != "" %}
+  <tr>
+    <td>{{param_list[8]}}</td>
+    <td>{{param_list[48]}}</td>
+    <td>{{param_list[58]}}</td>
+    <td>{{param_list[18]}}</td>
+    <td>{{param_list[68]}}</td>
+    <td>{{param_list[78]}}</td>
+    <td>{{param_list[28]}}</td>
+    <td>{{param_list[38]}}</td>
+  </tr>
+  {% endif %}
+  {% if param_list[9] != "" %}
+  <tr>
+    <td>{{param_list[9]}}</td>
+    <td>{{param_list[49]}}</td>
+    <td>{{param_list[59]}}</td>
+    <td>{{param_list[19]}}</td>
+    <td>{{param_list[69]}}</td>
+    <td>{{param_list[79]}}</td>
+    <td>{{param_list[29]}}</td>
+    <td>{{param_list[39]}}</td>
+  </tr>
+  {% endif %}
+</table>
+
+<h4> Average CER: $ {{avg_cer}} </h4>
+
+<!--<p><b> Summary Statement: To avoid one ED/Outpatient Visit, one tele visit incurs a cost of $ {{summ_cer}}. </b> </p>	-->
+
+</center>
+{% endblock content %} 

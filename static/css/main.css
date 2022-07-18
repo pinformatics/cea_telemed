@@ -1,0 +1,328 @@
+html {
+	height: 100%;
+	width: 100%;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    height: 100%;
+    width: 100%;
+}
+
+.wrapper{
+    width: 100%;
+    display: flex;
+    position: relative;
+}
+
+.wrapper .sidebar{
+    width: 210px;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgb(121, 0, 0);
+    padding: 30px 0px;
+    position: fixed;
+}
+
+.wrapper .sidebar ul li {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 160px;
+    height: 100%;
+    background-color: rgb(121, 0, 0);
+}
+
+.wrapper .sidebar ul li a {
+    display: block;
+    color: rgb(255, 255, 255);
+    padding: 10px 0px;
+    text-decoration: none;
+}
+
+.wrapper .sidebar ul li a:hover {
+    background-color: rgb(150, 150, 150);
+}
+
+.wrapper .sidebar div {
+    display: block;
+    color: rgb(255, 255, 255);
+    padding: 10px 0px;
+    text-decoration: none;
+}
+
+.wrapper .main_content {
+    width: 100%;
+    margin-left: 200px;
+}
+
+.wrapper .navbar {
+  background-color: rgb(121, 0, 0);
+  width: 100%;
+  top: 0;
+  position: fixed;
+}
+
+.wrapper .navbar ul {
+  width: 85%;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  background-color: rgb(121, 0, 0);
+}
+
+.wrapper .navbar li {
+    float: right;
+}
+
+.wrapper .navbar li a {
+  display: inline-block;
+  color: rgb(255, 255, 255);
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.wrapper .navbar div {
+    float: right;
+}
+
+.dropdown .dropbtn {
+  font-size: 16px;
+  border: none;
+  outline: none;
+  color: white;
+  padding: 14px 16px;
+  background-color: rgb(121, 0, 0);
+  margin: 0;
+}
+
+.navbar a:hover, .dropdown:hover .dropbtn {
+  background-color: rgb(150, 150, 150);
+}
+
+.dropdown-content {
+  display:none;
+  position: absolute;
+  background-color: #f9f9f9;
+  padding: 14px 16px;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown:hover .dropdown-content{
+  display: block;
+}
+
+.dropdown-content a {
+  float: none;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+div.fixed{
+  position: absolute;
+  top: 60px;
+  right: 15px;
+
+}
+
+div.a{
+  line-height: 2;
+}
+
+
+table.mytable{
+
+  border-collapse: collapse;
+  border: 1px solid black;
+  text-align:center;
+  padding: 10px;
+  font-size: 16px;
+  border:none;
+  table-layout: fixed;
+  width: 90%;
+
+}
+.mytable th,.mytable td{
+    border: 1px solid black;
+    border-collapse: collapse;
+    text-align:center;
+    border-bottom:none;
+
+}
+
+table.result{
+  border-collapse: collapse;
+  font-size: 16px;
+  padding: 10px 20px 10px 20px;
+  table-layout: auto;
+  text-align:center;
+  width: 50%;
+  empty-cells: hide;
+
+}
+.result th,.result td{
+  border: 1px solid black;
+  border-collapse: collapse;
+  text-align:center;
+  padding: 10px 20px 10px 20px;
+  white-space: nowrap;
+  empty-cells: hide;
+
+}
+table.ceatable{
+
+  border-collapse: collapse;
+  padding: 20px;
+  font-size: 16px;
+  padding: 10px 10px 10px 10px;
+  table-layout: auto;
+  text-align:center;
+  width: 40%;
+  empty-cells: show;
+}
+.ceatable th,.ceatable td{
+  border: 1px solid black;
+  border-collapse: collapse;
+  text-align:center;
+  padding: 10px 10px 10px 10px;
+
+}
+table.dataframe {
+  border-collapse: collapse;
+  border: 1px solid black;
+  text-align:center;
+  padding: 10px;
+  font-size: 16px;
+  border:none;
+  table-layout: fixed;
+  width: 90%;
+}
+
+.dataframe th, .dataframe td {
+  border: 1px solid black;
+  text-align:center;
+  width: 10%;
+  padding: 10px;
+  border-collapse: collapse;
+}
+.dataframe td:nth-child(10), .dataframe th:nth-child(10) {
+  border-right: solid 1px rgb(0, 0, 0);
+
+
+ }
+
+table.demo{
+  border-collapse: collapse;
+  border: 1px solid black;
+  text-align:center;
+  padding: 10px;
+  font-size: 16px;
+  border:none;
+  table-layout: fixed;
+  width: 80%;
+
+}
+
+
+.demo th, .demo td {
+  border: 1px solid black;
+  text-align:center;
+  width: 10%;
+  padding: 10px;
+  border-collapse: collapse;
+
+}
+
+
+.demo td:nth-child(6), .demo th:nth-child(6) {
+  border-left: 1px solid rgb(0, 0, 0);
+  width: 10%;
+}
+
+table.demographics {
+  border-collapse: collapse;
+  border: 1px solid black;
+  text-align:center;
+  padding: 10px;
+  font-size: 16px;
+  border:none;
+  table-layout: fixed;
+  width: 80%;
+
+}
+
+.demographics th, .demographics td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  text-align:center;
+  border-bottom:none;
+}
+
+
+table.hosp {
+  border-collapse: collapse;
+  border: 1px solid black;
+  text-align:center;
+  padding: 10px;
+  font-size: 16px;
+  border:none;
+  table-layout: auto;
+  max-width: 80%;
+
+}
+
+.hosp th, .hosp td {
+  border: 1px solid black;
+  text-align:center;
+  width: 10%;
+  padding: 10px;
+
+  overflow: visible;
+
+}
+.hosp td:nth-child(2), .hosp th:nth-child(2) {
+  border-left: 1px solid rgb(0, 0, 0);
+  width: 8%;
+}
+.hosp td:nth-child(6), .hosp th:nth-child(6) {
+  border-left: 1px solid rgb(0, 0, 0);
+  width: 10%;
+
+}
+.hosp tr:nth-of-type(4n) td {
+  border-bottom: 3px solid rgb(0, 0, 0);
+}
+
+
+.solid {
+  width: 750px;
+  padding: 25px;
+  border: 2px solid black;
+  margin-left: auto;
+  margin-right: auto;
+
+}
+
+.text-border{
+  border-top: solid 2px black;
+  padding:10px;
+  width:300px;
+  border-bottom: solid 2px black;
+}
+
+form label{
+  font-weight: bold;
+  text-align: right;
+}
